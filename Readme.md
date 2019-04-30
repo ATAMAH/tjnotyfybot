@@ -2,6 +2,8 @@
 
 Simple node.js bot that can work with telegram by SOCKS proxy and subscribes to TJournal webhooks at each start.
 
+Bot saves its state to *state* file in server root and loads it at each start.
+
 Working bot described here: https://tjournal.ru/flood/94920-bot-dlya-upominaniy-v-kommentariyah
 
 ### Bot commands
