@@ -2,6 +2,28 @@
 
 Simple node.js bot that can work with telegram by SOCKS proxy and subscribes to TJournal webhooks at each start.
 
+Working bot described here: https://tjournal.ru/flood/94920-bot-dlya-upominaniy-v-kommentariyah
+
+### Bot commands
+**/start** and **/track** that shows bot info
+
+**/track** *text* or **/track** and *text* in separate messages adds subscription to *text*
+
+**/remove** *text* or **/remove** and *text* in separate messages removes subscription to *text*
+
+**/list** shows your subscriptions
+
+**/top** shows list of top subscriptions for all users
+
+### And some commands for admins
+**/users** shows list of all bot subscribers
+
+**/subs** lists of all subscription texts of all users without usernames
+
+### Admin notifications
+Bot can notify admins about new subscriptions, subscribers and other events.
+
+### Configuration
 Just change values in config.js file and it will work:
 ```javascript
 const config = {
