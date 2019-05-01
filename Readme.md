@@ -79,7 +79,7 @@ Bot saves its state to *state* file in server root and loads it at each start.
 Working bot described here: https://tjournal.ru/flood/94920-bot-dlya-upominaniy-v-kommentariyah
 
 ### Bot commands
-**/start** and **/track** that shows bot info
+**/start** and **/help** that shows bot info
 
 **/track** *text* or **/track** and *text* in separate messages adds subscription to *text*
 
