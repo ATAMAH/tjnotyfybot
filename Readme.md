@@ -22,6 +22,12 @@ Working bot described here: https://tjournal.ru/flood/94920-bot-dlya-upominaniy-
 
 **/subs** lists of all subscription texts of all users without usernames
 
+**/preview** *text* shows text to notify subscribers
+
+**/notyfy** *text* notifying all subscribers with entered message
+
+**/state** bot sends current state data as a file
+
 ### Admin notifications
 Bot can notify admins about new subscriptions, subscribers and other events.
 
