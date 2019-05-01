@@ -157,14 +157,22 @@ function Controller(parameters) {
         return;
       }
 
-      Object.keys(controller.state.subscribers).forEach(function(username) {
-        let chatId = controller.state.subscribers[username];
+      if (data.cmd.arg) {
+        Object.keys(controller.state.subscribers).forEach(function(username) {
+          let chatId = controller.state.subscribers[username];
 
-        controller.telegram.sendMessage(chatId, `${data.cmd.argRaw}\n#stat #${data.cmd.cmd}`, 
+          controller.telegram.sendMessage(chatId, `${data.cmd.argRaw}\n#stat #${data.cmd.cmd}`, 
+            { reply_markup: { remove_keyboard: true }, 
+              parse_mode: "Markdown", 
+              disable_web_page_preview: true});
+        });          
+      }
+      else {
+        controller.telegram.sendMessage(data.chatId, `Пришлите текст оповещения для отправки\n#stat #${data.cmd.cmd}`, 
           { reply_markup: { remove_keyboard: true }, 
             parse_mode: "Markdown", 
             disable_web_page_preview: true});
-      });          
+      } 
     },
     state: function(data, controller) {
       if (!data.isAdmin) {
