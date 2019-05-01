@@ -1,6 +1,6 @@
 # Бот для связки TJournal с Telegram
 
-Это очень простой бот на node.js, который может работать с telegram через SOCKS прокси и автоматически подписывается на вебхуки tjournal.ru при каждом запуске.
+Это очень простой бот на node.js, который может работать с telegram через SOCKS прокси и автоматически подписывается на вебхуки tjournal.ru при каждом запуске. Бот отслеживает упоминание заданного текста в комментариях сайта tjournal.ru
 
 Бот сохраняет своё состояние в файл *state* в корне сервера и загружает его при каждом старте.
 
@@ -71,7 +71,7 @@ const config = {
 
 # TJournal - Telegram bot example
 
-Simple node.js bot that can work with telegram by SOCKS proxy and subscribes to TJournal webhooks at each start.
+Simple node.js bot that can work with telegram by SOCKS proxy and subscribes to TJournal webhooks at each start. Bot tracks and finds needed text in comments on tjournal.ru
 
 Bot saves its state to *state* file in server root and loads it at each start.
 
