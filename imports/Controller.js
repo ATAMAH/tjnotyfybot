@@ -105,8 +105,9 @@ function Controller(parameters) {
       let termsSorted = Object.keys(termsCount).sort(function(b,a){return termsCount[a]-termsCount[b]}).slice(0,10);
   
       controller.telegram.sendMessage(data.chatId, `Топ 10 подписок:\n${termsSorted.join(', ')}\n#stat #${data.cmd.cmd}`, 
-        { parse_mode: "Markdown", 
-          disable_web_page_preview: true });
+        { reply_markup: { remove_keyboard: true }, 
+          parse_mode: "Markdown", 
+          disable_web_page_preview: true});
     },
     // commands for admins
     users: function(data, controller) {
@@ -117,8 +118,9 @@ function Controller(parameters) {
       let subscribers = Object.keys(controller.state.subscribers);
     
       controller.telegram.sendMessage(data.chatId, `Подписчики бота (${subscribers.length}):\n@${subscribers.join(', @').escapeMarkdown()}\n#stat #${data.cmd.cmd}`, 
-        { parse_mode: "Markdown", 
-          disable_web_page_preview: true });
+        { reply_markup: { remove_keyboard: true }, 
+          parse_mode: "Markdown", 
+          disable_web_page_preview: true});
     },
     subs: function(data, controller) {
       if (!data.isAdmin) {
@@ -128,8 +130,9 @@ function Controller(parameters) {
       let subscribes = Object.keys(controller.state.subscribes);
 
       controller.telegram.sendMessage(data.chatId, `Подписки (${subscribes.length}):\n${subscribes.join(', ').escapeMarkdown()}\n#stat #${data.cmd.cmd}`, 
-        { parse_mode: "Markdown", 
-          disable_web_page_preview: true });
+        { reply_markup: { remove_keyboard: true }, 
+          parse_mode: "Markdown", 
+          disable_web_page_preview: true});
     },
     preview: function(data, controller) {
       if (!data.isAdmin) {
@@ -138,13 +141,15 @@ function Controller(parameters) {
 
       if (data.cmd.arg) {
         controller.telegram.sendMessage(data.chatId, `${data.cmd.argRaw}\n#stat #${data.cmd.cmd}`, 
-          { parse_mode: "Markdown", 
-            disable_web_page_preview: true });
+          { reply_markup: { remove_keyboard: true }, 
+            parse_mode: "Markdown", 
+            disable_web_page_preview: true});
       }
       else {
         controller.telegram.sendMessage(data.chatId, `Пришлите текст для предпросмотра\n#stat #${data.cmd.cmd}`, 
-          { parse_mode: "Markdown", 
-            disable_web_page_preview: true });
+          { reply_markup: { remove_keyboard: true }, 
+            parse_mode: "Markdown", 
+            disable_web_page_preview: true});
       }
     },
     notify: function(data, controller) {
@@ -156,8 +161,9 @@ function Controller(parameters) {
         let chatId = controller.state.subscribers[username];
 
         controller.telegram.sendMessage(chatId, `${data.cmd.argRaw}\n#stat #${data.cmd.cmd}`, 
-        { parse_mode: "Markdown", 
-          disable_web_page_preview: true });
+          { reply_markup: { remove_keyboard: true }, 
+            parse_mode: "Markdown", 
+            disable_web_page_preview: true});
       });          
     },
     state: function(data, controller) {
@@ -168,7 +174,7 @@ function Controller(parameters) {
       let buf = Buffer.from(JSON.stringify(controller.getStateData()));
 
       controller.telegram.bot.sendDocument(data.chatId, buf, {}, { filename: 'state', contentType: 'text/plain' }); 
-      controller.telegram.sendMessage(data.chatId, `#stat #${data.cmd.cmd}`); 
+      controller.telegram.sendMessage(data.chatId, `#stat #${data.cmd.cmd}`, { reply_markup: { remove_keyboard: true }}); 
     }
   };
 
