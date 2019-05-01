@@ -23,6 +23,10 @@ function Controller(parameters) {
     this.processTelegramData(data);
   });
 
+  this.telegram.bot.on('polling_error', (error) => {
+    this.notifyAdmin(`# Bot polling error ${JSON.stringify(error)}\n#stat #error`);
+  });
+
   // Definition for commands functions
   this.commands = {
     // commands for all users
@@ -106,22 +110,65 @@ function Controller(parameters) {
     },
     // commands for admins
     users: function(data, controller) {
-      if (data.isAdmin) {
-        let subscribers = Object.keys(controller.state.subscribers);
-      
-        controller.telegram.sendMessage(data.chatId, `Подписчики бота (${subscribers.length}):\n@${subscribers.join(', @').escapeMarkdown()}\n#stat #${data.cmd.cmd}`, 
+      if (!data.isAdmin) {
+        return;
+      }
+
+      let subscribers = Object.keys(controller.state.subscribers);
+    
+      controller.telegram.sendMessage(data.chatId, `Подписчики бота (${subscribers.length}):\n@${subscribers.join(', @').escapeMarkdown()}\n#stat #${data.cmd.cmd}`, 
+        { parse_mode: "Markdown", 
+          disable_web_page_preview: true });
+    },
+    subs: function(data, controller) {
+      if (!data.isAdmin) {
+        return;
+      }
+
+      let subscribes = Object.keys(controller.state.subscribes);
+
+      controller.telegram.sendMessage(data.chatId, `Подписки (${subscribes.length}):\n${subscribes.join(', ').escapeMarkdown()}\n#stat #${data.cmd.cmd}`, 
+        { parse_mode: "Markdown", 
+          disable_web_page_preview: true });
+    },
+    preview: function(data, controller) {
+      if (!data.isAdmin) {
+        return;
+      }
+
+      if (data.cmd.arg) {
+        controller.telegram.sendMessage(data.chatId, `${data.cmd.argRaw}\n#stat #${data.cmd.cmd}`, 
+          { parse_mode: "Markdown", 
+            disable_web_page_preview: true });
+      }
+      else {
+        controller.telegram.sendMessage(data.chatId, `Пришлите текст для предпросмотра\n#stat #${data.cmd.cmd}`, 
           { parse_mode: "Markdown", 
             disable_web_page_preview: true });
       }
     },
-    subs: function(data, controller) {
-      if (data.isAdmin) {
-        let subscribes = Object.keys(controller.state.subscribes);
-
-        controller.telegram.sendMessage(data.chatId, `Подписки (${subscribes.length}):\n${subscribes.join(', ').escapeMarkdown()}\n#stat #${data.cmd.cmd}`, 
-          { parse_mode: "Markdown", 
-            disable_web_page_preview: true });
+    notify: function(data, controller) {
+      if (!data.isAdmin) {
+        return;
       }
+
+      Object.keys(controller.state.subscribers).forEach(function(username) {
+        let chatId = controller.state.subscribers[username];
+
+        controller.telegram.sendMessage(chatId, `${data.cmd.argRaw}\n#stat #${data.cmd.cmd}`, 
+        { parse_mode: "Markdown", 
+          disable_web_page_preview: true });
+      });          
+    },
+    state: function(data, controller) {
+      if (!data.isAdmin) {
+        return;
+      }
+
+      let buf = Buffer.from(JSON.stringify(controller.getStateData()));
+
+      controller.telegram.bot.sendDocument(data.chatId, buf, {}, { filename: 'state', contentType: 'text/plain' }); 
+      controller.telegram.sendMessage(data.chatId, `#stat #${data.cmd.cmd}`); 
     }
   };
 

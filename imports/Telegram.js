@@ -44,18 +44,21 @@ function Telegram(parameters) {
     if (data.entities) {
       data.entities.forEach(element => {
         if (element.type == "bot_command") {
-          if (this.pending[data.chat.id]) {
-            delete this.pending[data.chat.id];
-          }
+          if (!element.offset) {
+            if (this.pending[data.chat.id]) {
+              delete this.pending[data.chat.id];
+            }
 
-          res = { 
-            cmd: data.text.substr(element.offset + 1, element.length - 1).toLowerCase(),
-            arg: data.text.substr(element.offset + 1 + element.length).toLowerCase(),
-            pending: false
-          };
+            res = { 
+              cmd: data.text.substr(element.offset + 1, element.length - 1).toLowerCase(),
+              arg: data.text.substr(element.offset + 1 + element.length).toLowerCase(),
+              argRaw: data.text.substr(element.offset + 1 + element.length),
+              pending: false
+            };
 
-          if (!res.arg) {
-            this.pending[data.chat.id] = res.cmd;
+            if (!res.arg) {
+              this.pending[data.chat.id] = res.cmd;
+            }
           }
         } 
       });
