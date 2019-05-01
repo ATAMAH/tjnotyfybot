@@ -4,6 +4,10 @@ const http    = require('http');
 const fs      = require('fs');
 const path    = require('path');
 const config  = require('./config');
+const logger  = require('morgan');
+const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
+const errorHandler = require('errorhandler');
 
 var debugOut = ( config.debug ) ? console.log : (() => { });
 
@@ -44,12 +48,10 @@ var debugOut = ( config.debug ) ? console.log : (() => { });
 
   // https://www.notion.so/dd8bf6f5c1fd430286530644d4c362df
   var startWebhookServer = function() {
-    app.configure(function () {
-      app.set('port', process.env.PORT || 80);
-      app.use(express.logger('dev'));
-      app.use(express.json()); // parse received data as JSON
-      app.use(express.methodOverride());
-    });
+    app.set('port', process.env.PORT || 80);
+    app.use(logger('dev'));
+    app.use(bodyParser.json()); // parse received data as JSON
+    app.use(methodOverride());
 
     app.post('/', function (req, res) {
       res.writeHead(200, {'Content-Type': 'text/html'});
@@ -58,9 +60,9 @@ var debugOut = ( config.debug ) ? console.log : (() => { });
       controller.processWebhookData(req.body);
     });
     
-    app.configure('development', function () {
-      app.use(express.errorHandler());
-    });
+    if ('development' == app.get('env')) {
+      app.use(errorHandler());
+    }
     
     var server = http.createServer(app);
     
