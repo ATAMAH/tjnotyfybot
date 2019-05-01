@@ -68,6 +68,7 @@ const config = {
     url: 'https://somedomain.somezone'
   }
 }
+```
 
 # TJournal - Telegram bot example
 
