@@ -24,7 +24,7 @@
 
 **/preview** *text* показывает превью текста для оповещения пользователей от администратора
 
-**/notyfy** *text* отправляет текстовое оповещение всем подписчикам бота
+**/notify** *text* отправляет текстовое оповещение всем подписчикам бота
 
 **/state** бот присылает вам файл *state*
 
@@ -96,7 +96,7 @@ Working bot described here: https://tjournal.ru/flood/94920-bot-dlya-upominaniy-
 
 **/preview** *text* shows text to notify subscribers
 
-**/notyfy** *text* notifying all subscribers with entered message
+**/notify** *text* notifying all subscribers with entered message
 
 **/state** bot sends current state data as a file
 
